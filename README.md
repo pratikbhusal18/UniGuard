@@ -45,6 +45,108 @@ All powered by data already living in your Microsoft 365 tenant — **no new sys
 
 ---
 
+## 👥 Who Uses UniGuard
+
+UniGuard serves **5 distinct personas** — each with different needs, permissions, and conversation patterns.
+
+### 👩‍🏫 Faculty (Professors & Instructors)
+
+> *"I teach 3 sections of BIO301 with 120 students. I can't track who's falling behind across all of them."*
+
+| What they do | What they ask UniGuard |
+|---|---|
+| Teach courses, grade assignments | *"Who's struggling in my BIO301 class?"* |
+| Notice students disengaging but lack data | *"Show me students with engagement below 50%"* |
+| Want to help but don't have time for 120 emails | *"Draft an email to Amber about her missing labs"* |
+| Need midterm/final performance summaries | *"Generate a midterm report for BIO301"* |
+
+**Sees:** Only students enrolled in their linked courses
+**Can't see:** Other faculty's classes, career goals, intervention history
+
+---
+
+### 🧑‍💼 Academic Advisors
+
+> *"I have 200 advisees. I don't know who's in trouble until they're already on academic probation."*
+
+| What they do | What they ask UniGuard |
+|---|---|
+| Manage a caseload of 100-500 students | *"Show me my at-risk advisees"* |
+| Track academic progress across ALL classes | *"How is Amber Rodriguez doing across all her courses?"* |
+| Conduct intervention meetings, send referrals | *"Log that I met with Amber today — she'll start tutoring"* |
+| Help students plan their path to graduation | *"What does Amber need to graduate?"* |
+| Connect students to support services | *"Refer Amber to the STEM tutoring center"* |
+
+**Sees:** Full cross-class view for their advisees — grades, engagement, career goals, intervention history
+**Can't see:** Students assigned to other advisors
+
+---
+
+### 🎓 Students
+
+> *"I don't know if I'm on track to graduate. I missed some assignments and I'm afraid to check."*
+
+| What they do | What they ask UniGuard |
+|---|---|
+| Try to stay on track but feel overwhelmed | *"What are my current grades?"* |
+| Don't know what courses to take next | *"What should I take next semester?"* |
+| Have career goals but no roadmap | *"I want to go to medical school — am I on track?"* |
+| Need reminders and encouragement | *"When is my next assignment due?"* |
+| Want to understand degree requirements | *"What do I still need to graduate?"* |
+
+**Sees:** Only their own data — grades, degree progress, career goal tracking
+**Can't see:** Any other student's information (FERPA enforced)
+
+---
+
+### 🏛️ Department Chairs & Deans
+
+> *"I need to know how the Biology department is performing this semester — not in 3 months when it's too late."*
+
+| What they do | What they ask UniGuard |
+|---|---|
+| Oversee academic departments | *"Generate a department report for Biology"* |
+| Track retention and student success metrics | *"How many at-risk students do we have this semester?"* |
+| Identify courses with high failure rates | *"Which courses have the lowest engagement scores?"* |
+| Make resource allocation decisions | *"Do we need more tutoring support for MATH201?"* |
+
+**Sees:** Aggregated department-level data, course-level stats
+**Can't see:** Individual student details (sees counts and averages, not names)
+
+---
+
+### 🔧 IT Administrators
+
+> *"I need to deploy this, keep it running, and make sure we're FERPA compliant."*
+
+| What they do | What they ask UniGuard |
+|---|---|
+| Deploy and maintain the agent | Doesn't chat — manages via SharePoint + Power Platform |
+| Configure alert rules and thresholds | Edits Agent Config and Alert Rules lists directly |
+| Manage Entra ID groups and user roles | Adds/removes users from UniGuard-Faculty/Advisors/Students groups |
+| Monitor audit logs for compliance | Reviews Audit Log list for query patterns |
+| Onboard new faculty and advisors | Adds entries to User Roles list |
+
+**Sees:** Everything (Admin role)
+**Manages:** All configuration, no student interaction
+
+---
+
+### Persona Access Summary
+
+| Data | 🎓 Student | 👩‍🏫 Faculty | 🧑‍💼 Advisor | 🏛️ Dean | 🔧 Admin |
+|---|---|---|---|---|---|
+| Own grades & progress | ✅ | — | — | — | ✅ |
+| Students in their class | — | ✅ | — | — | ✅ |
+| Their advisees (full view) | — | — | ✅ | — | ✅ |
+| Career goals | ✅ own | ❌ | ✅ advisees | ❌ | ✅ |
+| Intervention history | ❌ | ❌ | ✅ advisees | ❌ | ✅ |
+| Department aggregates | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Alert rules & config | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Audit log | ❌ | ❌ | ❌ | ❌ | ✅ |
+
+---
+
 ## 📊 Manual vs. UniGuard
 
 | Scenario | 🐢 Manual Process | ⚡ With UniGuard |
