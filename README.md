@@ -18,7 +18,7 @@
 
 **1 Agent · 7 Skills · Every Student Covered**
 
-[Getting Started](#-getting-started) · [Architecture](#-architecture) · [Skills](#-skills--capabilities) · [SharePoint Lists](#-sharepoint-brain) · [Flows](#-power-automate-flows) · [Topics](#-copilot-studio-topics)
+[Quick Deploy](docs/guides/QUICK-DEPLOY.md) · [Full Deployment](docs/guides/DEPLOYMENT.md) · [Architecture](#-architecture) · [Use Cases](docs/design/USE-CASES-v2.md) · [Privacy](docs/design/PRIVACY-DESIGN.md)
 
 </div>
 
@@ -354,60 +354,32 @@ Calls `GenerateReport` → Returns a formatted summary with key metrics, trends,
 
 ```
 UniGuard/
-├── 📄 README.md                          # You are here
-├── 📄 LICENSE                            # MIT License
+├── README.md                          # This file — project overview
+├── LICENSE                            # MIT license
+├── .gitignore
 │
-├── 📁 copilot-studio/
-│   ├── 📁 topics/
-│   │   ├── StudentPulse.yaml             # "How is Student X doing?"
-│   │   ├── EarlyAlerts.yaml              # "Show me at-risk students"
-│   │   ├── DegreeProgress.yaml           # "What courses does Student X need?"
-│   │   ├── CourseRecommendation.yaml     # "What should I take next semester?"
-│   │   ├── Outreach.yaml                 # "Draft an email to Student X..."
-│   │   └── ProgressReport.yaml           # "Generate a report for my class"
-│   ├── 📁 entities/
-│   │   ├── StudentEntity.json            # Student name/ID entity
-│   │   ├── CourseEntity.json             # Course name/ID entity
-│   │   └── SemesterEntity.json           # Semester entity
-│   └── 📁 adaptive-cards/
-│       ├── StudentPulseCard.json         # Student overview card
-│       ├── AlertListCard.json            # At-risk students card
-│       ├── DegreeProgressCard.json       # Degree progress visualization
-│       └── ProgressReportCard.json       # Report output card
+├── 📁 solution/
+│   └── UniGuard_Solution.zip          # ⚡ Importable Power Platform solution
 │
-├── 📁 power-automate/
-│   ├── EarlyAlertScan.zip               # Scheduled alert scanning flow
-│   ├── NudgeEngine.zip                   # Scheduled nudge/reminder flow
-│   ├── GetStudentContext.zip             # Instant student data aggregation
-│   └── GenerateReport.zip               # Instant report generation
-│
-├── 📁 sharepoint/
-│   ├── 📁 list-templates/
-│   │   ├── StudentProfiles.json          # List schema + sample data
-│   │   ├── CourseCatalog.json            # List schema + sample data
-│   │   ├── DegreePlans.json              # List schema + sample data
-│   │   ├── StudentEnrollments.json       # List schema + sample data
-│   │   ├── AlertRules.json               # List schema + default rules
-│   │   ├── InterventionHistory.json      # List schema
-│   │   ├── AgentConfig.json              # List schema + default settings
-│   │   └── AuditLog.json                 # List schema
-│   └── 📁 site-scripts/
-│       └── provision-site.json           # Site script to create all lists
+├── 📁 Scripts/
+│   ├── Provision-UniGuard.ps1         # 🔧 Creates SharePoint + 9 lists + sample data
+│   └── Fill-Gaps.ps1                  # 🔧 Adds degree plans, career goals, interventions
 │
 ├── 📁 docs/
-│   ├── setup-guide.md                    # Detailed setup walkthrough
-│   ├── admin-guide.md                    # Configuration & alert rules
-│   ├── user-guide.md                     # How to use UniGuard in Teams
-│   └── architecture.md                   # Deep-dive technical architecture
+│   ├── 📁 guides/                     # How to deploy & use
+│   │   ├── QUICK-DEPLOY.md            # ⚡ 10-minute deployment (start here!)
+│   │   ├── DEPLOYMENT.md              # Full step-by-step deployment
+│   │   ├── FLOW-WALKTHROUGH.md        # Power Automate flow creation guide
+│   │   └── SETUP.md                   # SharePoint list schemas reference
+│   │
+│   └── 📁 design/                     # Architecture & design decisions
+│       ├── AGENT-DESIGN.md            # Agent flows, topics, conversation diagrams
+│       ├── USE-CASES-v2.md            # 6 use cases with conversation examples
+│       ├── SHAREPOINT-DESIGN-v2.md    # 9-list design with role-based filtering
+│       ├── PRIVACY-DESIGN.md          # FERPA compliance + access control matrix
+│       └── DATA-PLAN.md              # University data landscape + 5 real scenarios
 │
-└── 📁 assets/
-    ├── uniguard-banner.png               # README banner image
-    ├── uniguard-icon.png                 # Agent icon
-    └── screenshots/
-        ├── student-pulse-demo.png        # Student Pulse in action
-        ├── early-alert-demo.png          # Early Alert list
-        ├── degree-progress-demo.png      # Degree Progress card
-        └── nudge-demo.png               # Nudge Engine message
+└── 📁 images/                         # Screenshots and diagrams
 ```
 
 ---
@@ -418,63 +390,46 @@ UniGuard/
 
 | Requirement | Details |
 |---|---|
-| **Microsoft 365 Tenant** | Business or Education license with Teams |
-| **Copilot Studio** | License to create and publish agents |
-| **Power Automate** | Premium connectors (SharePoint, HTTP, Teams) |
-| **SharePoint Online** | Site with permissions to create lists |
-| **Microsoft Graph API** | App registration with `Mail.Send`, `Chat.ReadWrite`, `User.Read.All` |
+| **Microsoft 365 Education** | E3 or E5 with Teams, SharePoint |
+| **Copilot Studio** | Per-user or capacity-based license |
+| **Power Automate** | Premium license (SharePoint connectors) |
+| **PowerShell 7** | + Microsoft.Graph module |
 
-### Setup Overview
+### Quick Deploy (~10 minutes)
 
 ```
-Step 1 ──► Provision SharePoint Site & Lists
-            Deploy list templates from /sharepoint/list-templates/
-            Populate Course Catalog and Degree Plans with your data
-
-Step 2 ──► Configure Alert Rules
-            Add your institution's thresholds to the Alert Rules list
-            (e.g., Attendance < 70% = High, GPA < 2.0 = Critical)
-
-Step 3 ──► Import Power Automate Flows
-            Import .zip packages from /power-automate/
-            Update SharePoint site URL and connection references
-
-Step 4 ──► Create Copilot Studio Agent
-            Import topic definitions from /copilot-studio/topics/
-            Connect to Power Automate flows as actions
-            Upload adaptive card templates
-
-Step 5 ──► Register Graph API App
-            Create app registration in Azure AD
-            Grant permissions: Mail.Send, Chat.ReadWrite, User.Read.All
-            Add client secret to Agent Config list
-
-Step 6 ──► Publish to Teams
-            Publish agent in Copilot Studio
-            Deploy to Teams app catalog
-            Assign to target user groups (advisors, faculty, students)
-
-Step 7 ──► Test & Validate
-            Run EarlyAlertScan manually to verify alert detection
-            Test each topic in Teams chat
-            Verify Audit Log entries
+Step 1 ──► Run provisioning script (SharePoint + 9 lists + sample data)
+Step 2 ──► Create 3 Entra security groups (Faculty, Advisors, Students)
+Step 3 ──► Import UniGuard_Solution.zip into Power Platform
+Step 4 ──► Create Copilot Studio agent + connect flow + publish to Teams
+Step 5 ──► Test: "Show me at-risk students"
 ```
 
-> 📖 For the full step-by-step walkthrough, see **[docs/setup-guide.md](docs/setup-guide.md)**
+> 📖 **[Quick Deploy Guide →](docs/guides/QUICK-DEPLOY.md)** (start here!)
+>
+> 📖 **[Full Deployment Guide →](docs/guides/DEPLOYMENT.md)** (detailed steps with troubleshooting)
 
 ---
 
 ## 🔒 Security & Privacy
 
-UniGuard is designed with student data privacy in mind:
+UniGuard enforces **role-based access at the flow level** — the agent never sees data the user shouldn't access.
+
+| Role | What They See | What's Hidden |
+|---|---|---|
+| 🎓 **Student** | Own grades, degree progress, career goals | All other students |
+| 👩‍🏫 **Faculty** | Students in their classes only | Other classes, career goals, interventions |
+| 🧑‍💼 **Advisor** | Their advisees — full view | Other advisors' students |
+| 🔑 **Admin** | Everything | — |
 
 | Concern | How UniGuard Addresses It |
 |---|---|
-| **Data Residency** | All data stays in your M365 tenant — no external APIs or third-party storage |
-| **Access Control** | SharePoint permissions + Teams channel policies restrict who sees what |
-| **FERPA Compliance** | Advisors only see their assigned students; role-based topic access |
-| **Audit Trail** | Every agent action is logged to the Audit Log list with actor, timestamp, and details |
-| **No PII in Prompts** | Student data is fetched server-side via flows — never sent as raw prompts to AI |
+| **FERPA** | Role-based filtering enforced in Power Automate, not just AI instructions |
+| **Data Residency** | All data stays in your M365 tenant — zero external APIs |
+| **Audit Trail** | Every query and action logged with user, role, and timestamp |
+| **No PII in Prompts** | Data fetched server-side via flows — filtered before reaching the AI |
+
+> 📖 **[Privacy Design →](docs/design/PRIVACY-DESIGN.md)** (access matrix, flow implementation, FERPA mapping)
 
 ---
 
